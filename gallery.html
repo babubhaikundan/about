@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery - BABU BHAI KUNDAN</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00c6ff;
+            --secondary-color: #0072ff;
+            --dark-bg: #111;
+            --light-bg: #1a1a1a;
+            --text-color: #f0f0f0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .gallery-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 198, 255, 0.3);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        .gallery-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            border-radius: 2px;
+        }
+        .back-to-portfolio {
+            display: inline-block;
+            margin-top: 20px;
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 198, 255, 0.2);
+            font-weight: 600;
+        }
+        .back-to-portfolio:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 198, 255, 0.4);
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .photo-item {
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            background: var(--light-bg);
+            height: 220px;
+        }
+        /* Skeleton Loader Animation */
+        .photo-item.loading::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, var(--light-bg) 25%, #2a2a2a 50%, var(--light-bg) 75%);
+            background-size: 200% 100%;
+            animation: loading-shimmer 1.5s infinite linear;
+        }
+        @keyframes loading-shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+        .photo-item .photo-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .photo-item .photo-overlay .fa-search-plus {
+            color: white;
+            font-size: 2.5em;
+            transform: scale(0.8);
+            transition: transform 0.4s ease;
+        }
+        .photo-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 198, 255, 0.35);
+        }
+        .photo-item:hover img {
+            transform: scale(1.1);
+            filter: blur(2px);
+        }
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
+        .photo-item:hover .photo-overlay .fa-search-plus {
+            transform: scale(1);
+        }
+
+        /* Lightbox CSS */
+        .lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lightbox-content {
+            position: relative;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+        }
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 5px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        .lightbox-btn {
+            position: absolute; color: #fff; background: rgba(0,0,0,0.4); border: none;
+            font-size: 1.8em; cursor: pointer;
+            top: 50%; transform: translateY(-50%);
+            transition: background 0.3s, color 0.3s;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .lightbox-btn:hover {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+        }
+        .lightbox-close {
+            top: 20px; right: 20px; font-size: 2em;
+            width: 45px; height: 45px;
+        }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+        .lightbox-caption, .lightbox-counter {
+            color: #ccc;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.5);
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .lightbox-caption {
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+        .lightbox-counter {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gallery-container">
+        <div class="gallery-header">
+            <h1>My Photo Gallery</h1>
+            <a href="index.html" class="back-to-portfolio"><i class="fa-solid fa-arrow-left"></i> Back to Main Page</a>
+        </div>
+        <div class="photo-grid" id="photoGrid">
+            <!-- Photos will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-btn lightbox-close" title="Close"><i class="fa-solid fa-xmark"></i></button>
+        <button class="lightbox-btn lightbox-prev" title="Previous Image"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="lightbox-btn lightbox-next" title="Next Image"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="lightbox-content">
+            <img src="" alt="Gallery Image" id="lightboxImage">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+            <div class="lightbox-counter" id="lightboxCounter"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const photoGrid = document.getElementById('photoGrid');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            const lightboxCounter = document.getElementById('lightboxCounter');
+
+            // Your new image links are here
+            // We use an array of objects to store more data like captions
+            const photoData = [
+                { src: 'https://s.tfrbot.com/h/sRMf7S', caption: 'Nature\'s Embrace' },
+                { src: 'https://s.tfrbot.com/h/g5lIWO', caption: 'Serene Waters' },
+                { src: 'https://s.tfrbot.com/h/Vf6F3e', caption: 'Mountain Majesty' },
+                { src: 'https://s.tfrbot.com/h/Aa82dp', caption: 'Golden Hour' },
+                { src: 'https://s.tfrbot.com/h/FT6nPA', caption: 'Forest Path' },
+                { src: 'https://s.tfrbot.com/h/8dEtzH', caption: 'Winter\'s Kiss' },
+                { src: 'https://s.tfrbot.com/h/hUCgdx', caption: 'Coastal Dreams' }
+            ];
+
+            let currentImageIndex = 0;
+            
+            // Populate the grid with professional loading states
+            photoData.forEach((data, index) => {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item loading'; // Start with loading class
+                photoItem.dataset.index = index;
+
+                const img = new Image();
+                img.src = data.src;
+                img.alt = data.caption;
+                
+                // When image is loaded, remove the loading class
+                img.onload = () => {
+                    photoItem.classList.remove('loading');
+                    photoItem.appendChild(img);
+                    const overlay = document.createElement('div');
+                    overlay.className = 'photo-overlay';
+                    overlay.innerHTML = `<i class="fas fa-search-plus"></i>`;
+                    photoItem.appendChild(overlay);
+                };
+                
+                // Optional: Handle image loading errors
+                img.onerror = () => {
+                     photoItem.classList.remove('loading');
+                     photoItem.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">Image failed to load</p>';
+                };
+
+                photoGrid.appendChild(photoItem);
+            });
+
+            const showImage = (index) => {
+                if (index < 0 || index >= photoData.length) return;
+                currentImageIndex = index;
+                const data = photoData[index];
+                lightboxImage.src = data.src;
+                lightboxCaption.textContent = data.caption;
+                lightboxCounter.textContent = `${index + 1} / ${photoData.length}`;
+            };
+
+            const openLightbox = (index) => {
+                showImage(index);
+                lightbox.classList.add('active');
+            };
+
+            const closeLightbox = () => {
+                lightbox.classList.remove('active');
+            };
+
+            const nextImage = () => showImage((currentImageIndex + 1) % photoData.length);
+            const prevImage = () => showImage((currentImageIndex - 1 + photoData.length) % photoData.length);
+
+            photoGrid.addEventListener('click', e => {
+                const photoItem = e.target.closest('.photo-item');
+                if (photoItem && !photoItem.classList.contains('loading')) {
+                    openLightbox(parseInt(photoItem.dataset.index));
+                }
+            });
+
+            lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+            lightbox.querySelector('.lightbox-next').addEventListener('click', nextImage);
+            lightbox.querySelector('.lightbox-prev').addEventListener('click', prevImage);
+            
+            // Close on clicking the dark background
+            lightbox.addEventListener('click', e => {
+                if(e.target === lightbox) closeLightbox();
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', e => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'Escape') closeLightbox();
+            });
+        });
+    </script>
+</body>
+</html>

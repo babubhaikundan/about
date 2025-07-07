@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BABU BHAI KUNDAN</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-color: #00c6ff;
+      --secondary-color: #0072ff;
+      --animation-speed-fast: 0.3s;
+      --animation-speed-normal: 0.4s;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; color: #fff; background-color: #000; overflow: hidden; }
+    body.loaded .preloader { opacity: 0; pointer-events: none; }
+    body.loaded .container { opacity: 1; }
+    .preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; justify-content: center; align-items: center; z-index: 1000; transition: opacity var(--animation-speed-normal) ease; }
+    .spinner { width: 60px; height: 60px; border: 5px solid rgba(255, 255, 255, 0.2); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .video-bg { position: fixed; top: 0; left: 0; min-width: 100%; min-height: 100%; object-fit: cover; z-index: -2; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: -1; }
+    .container { height: 100vh; overflow-y: auto; padding: 60px 20px; display: flex; flex-direction: column; align-items: center; opacity: 0; transition: opacity var(--animation-speed-normal) ease; }
+    .container::-webkit-scrollbar { width: 8px; }
+    .container::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+    .container::-webkit-scrollbar-thumb { background-color: var(--secondary-color); border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+    .fixed-buttons > div, .fixed-buttons > button { position: fixed; z-index: 10; transition: opacity var(--animation-speed-normal) ease, transform var(--animation-speed-normal) ease; }
+    .lang-toggle { top: 20px; right: 20px; }
+    .lang-toggle.hide { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+    .back-to-top { bottom: 20px; right: 20px; opacity: 0; pointer-events: none; }
+    .back-to-top.active { opacity: 1; pointer-events: auto; }
+    .fixed-buttons button { background: var(--secondary-color); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; box-shadow: 0 0 10px rgba(0,198,255,0.4); display: flex; justify-content: center; align-items: center; font-size: 1em; transition: background-color var(--animation-speed-fast), transform var(--animation-speed-fast); }
+    #langBtn { font-size: 0.9em; width: auto; padding: 0 15px; border-radius: 20px; }
+    .fixed-buttons button:hover { background: var(--primary-color); transform: scale(1.1); }
+    .card { background: rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 40px 30px; backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; max-width: 850px; width: 100%; box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); margin-bottom: 40px; }
+    .profile-pic { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color); margin-bottom: 20px; }
+    h1 { font-family: 'Playfair Display', serif; font-size: 3em; margin-bottom: 10px; color: var(--primary-color); }
+    p#intro { font-size: 1.15em; line-height: 1.7; margin-bottom: 30px; }
+    .info-box { text-align: left; margin-top: 20px; background-color: rgba(255, 255, 255, 0.05); border-radius: 12px; overflow: hidden; }
+    .info-box-header { padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.05); transition: background-color var(--animation-speed-fast); text-decoration: none; color: #fff; }
+    .info-box-header:hover { background: rgba(0, 198, 255, 0.1); }
+    .info-box h2 { font-size: 1.5em; color: var(--primary-color); font-family: 'Playfair Display', serif; margin: 0; }
+    .accordion-icon { transition: transform var(--animation-speed-normal) ease; font-size: 1.2em; }
+    .info-box-header.active .accordion-icon { transform: rotate(180deg); }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height var(--animation-speed-normal) ease-out; }
+    .accordion-content-inner { padding: 15px 20px; }
+    .accordion-content ul { list-style: none; padding: 0; line-height: 1.8; }
+    .accordion-content ul li::before { content: "✔ "; color: var(--primary-color); }
+    .social-links { margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .social-links a { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; transition: all var(--animation-speed-fast); box-shadow: 0 0 12px rgba(0,198,255,0.5); }
+    .social-links a:hover { transform: scale(1.08); box-shadow: 0 0 20px rgba(0,198,255,0.8); }
+    footer { margin-top: 20px; font-size: 0.9em; color: #ccc; text-align: center; padding-bottom: 20px; width: 100%; }
+  </style>
+</head>
+<body>
+
+  <div class="preloader"><div class="spinner"></div></div>
+  <video autoplay muted loop playsinline class="video-bg">
+    <source src="bg.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+  
+  <div class="fixed-buttons">
+    <div class="lang-toggle" id="langToggle"><button id="langBtn"></button></div>
+    <button class="back-to-top" id="backToTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
+  </div>
+
+  <div class="container" id="mainContent">
+    <div class="card">
+      <img src="kundan.png" alt="BABU BHAI KUNDAN" class="profile-pic">
+      <h1 id="name"></h1>
+      <p id="intro"></p>
+      <div id="accordionContainer"></div>
+    </div>
+    <footer id="footer"></footer>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    let currentLang = 'en';
+
+    const content = {
+      en: {
+        langBtnText: "हिंदी",
+        name: "BABU BHAI KUNDAN   (𝕂𝕦𝕟𝕕𝕒𝕟 𝕐𝕒𝕕𝕒𝕧)",
+        intro: "I am a Civil Engineer with strong communication skills, an active listener, and a quick learner, capable of engaging effectively with individuals from diverse backgrounds.",
+        sections: [
+          { id: 'projects', title: 'Projects', content_type: 'list', items: ["Residential Building Plan: Designed a 2BHK layout using AutoCAD.", "Water Quality Analysis (Internship): Conducted tests on water samples.", "Basic Surveying Project: Performed levelling and contouring."] },
+          { id: 'skills', title: 'Skills', content_type: 'list', items: ["KYP (SCVT)", "Cisco - IT Essentials", "AI: Basic and Advanced (IIT Patna)", "AutoCAD (Beginner)"] },
+          { id: 'languages', title: 'Languages', content_type: 'list', items: ["Hindi (Native)", "English (Professional)"] },
+          { id: 'education', title: 'Education', content_type: 'list', items: ["Matriculation (85.4%) - J.P.L High School, Basaha(Supaul) (2021)", "Diploma in Civil Engineering (67.33%) - G.P. Saharsa (2024)"] },
+          { id: 'experience', title: 'Experience', content_type: 'list', items: ["Internship in PHED Department (Govt.) – Dec 2023 to Jan 2024"] },
+          { id: 'contact', title: 'Contact', content_type: 'list', items: ["📍 Supaul, Bihar", "📧 hellokundan76@gmail.com", "📞 +91 7654405920"] },
+          { id: 'photos', title: 'Photo Album', content_type: 'link', url: 'gallery.html' },
+          { id: 'social', title: 'Social Media & Resume', content_type: 'social-links' }
+        ],
+        resumeBtn: "📄 Download Resume",
+        footer: "© 2025 BABU BHAI KUNDAN. All rights reserved."
+      },
+      hi: {
+        langBtnText: "English",
+        name: "Babu (Kundan Yadav)",
+        intro: "मैं एक सिविल इंजीनियर हूं, जिसकी संचार कौशल क्षमता बहुत अच्छी है, मैं एक सक्रिय श्रोता हूं, तथा शीघ्र सीखने वाला व्यक्ति हूं, तथा विविध पृष्ठभूमियों के व्यक्तियों के साथ प्रभावी ढंग से जुड़ने में सक्षम हूं। ",
+        sections: [
+          { id: 'projects', title: 'परियोजनाएं', content_type: 'list', items: ["आवासीय भवन योजना: ऑटोकैड का उपयोग करके 2BHK लेआउट डिजाइन किया।", "जल गुणवत्ता विश्लेषण (इंटर्नशिप): पानी के नमूनों पर जांच की।", "बेसिक सर्वेक्षण परियोजना: लेवलिंग और कंटूरिंग का प्रदर्शन किया।"] },
+          { id: 'skills', title: 'कौशल', content_type: 'list', items: ["केवाईपी (एससीवीटी)", "सिस्को - आईटी एसेंशियल्स", "एआई: बेसिक और एडवांस्ड", "ऑटोकैड (शुरुआती)"] },
+          { id: 'languages', title: 'भाषाएँ', content_type: 'list', items: ["हिंदी (मूल)", "अंग्रेजी (पेशेवर)"] },
+          { id: 'education', title: 'शिक्षा', content_type: 'list', items: ["मैट्रिक (85.4%) - जवाहर प्रेमलाल हाई स्कूल, बसहा,(सुपौल)(2021)", "सिविल इंजीनियरिंग में डिप्लोमा (67.33%) - जी.पी. सहरसा (2024)"] },
+          { id: 'experience', title: 'अनुभव', content_type: 'list', items: ["पीएचईडी विभाग में इंटर्नशिप – दिसंबर 2023 से जनवरी 2024"] },
+          { id: 'contact', title: 'संपर्क', content_type: 'list', items: ["📍 सुपौल, बिहार", "📧 hellokundan76@gmail.com", "📞 +91 7654405920"] },
+          { id: 'photos', title: 'फोटो एल्बम', content_type: 'link', url: 'gallery.html' },
+          { id: 'social', title: 'सोशल मीडिया और रिज्यूमे', content_type: 'social-links' }
+        ],
+        resumeBtn: "📄 रिज्यूमे डाउनलोड करें",
+        footer: "© 2025 बाबू भाई कुंदन। सर्वाधिकार सुरक्षित।"
+      }
+    };
+    
+    const accordionContainer = document.getElementById('accordionContainer');
+
+    function buildAccordion() {
+        accordionContainer.innerHTML = '';
+        const sectionsData = content[currentLang].sections;
+        sectionsData.forEach(section => {
+            let sectionHtml = '';
+            if (section.content_type === 'link') {
+                sectionHtml = `<div class="info-box"><a href="${section.url}" class="info-box-header"><h2>${section.title}</h2><span class="accordion-icon"><i class="fa-solid fa-arrow-right"></i></span></a></div>`;
+            } else {
+                let innerContentHtml = '';
+                if (section.content_type === 'list') {
+                    innerContentHtml = `<ul>${section.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+                } else if (section.content_type === 'social-links') {
+                    // --- ALL SOCIAL LINKS ARE NOW HERE ---
+                    innerContentHtml = `<div class="social-links">
+                        <a id="resume-btn" href="Resume.pdf" download>${content[currentLang].resumeBtn}</a>
+                        <a href="https://www.linkedin.com/in/babubhaikundan" target="_blank">💼 LinkedIn</a>
+                        <a href="https://instagram.com/babubhaikundan" target="_blank">📸 Instagram</a>
+                        <a href="https://facebook.com/babubhaikundan" target="_blank">📘 Facebook</a>
+                        <a href="https://youtube.com/@babubhaikundan" target="_blank">📺 YouTube</a>
+                        <a href="https://t.me/kundan_yadav_bot" target="_blank">✈️ Telegram</a>
+                        <a href="https://babubhaikundan.blogspot.com" target="_blank">📝 Blogger</a>
+                        <a href="https://x.com/babubhaikundan" target="_blank">🐦 Twitter</a>
+                    </div>`;
+                }
+                
+                sectionHtml = `<div class="info-box"><div class="info-box-header"><h2>${section.title}</h2><span class="accordion-icon"><i class="fa-solid fa-chevron-down"></i></span></div><div class="accordion-content"><div class="accordion-content-inner">${innerContentHtml}</div></div></div>`;
+            }
+            accordionContainer.innerHTML += sectionHtml;
+        });
+        addAccordionListeners();
+    }
+
+    function updateAllContent(lang) {
+        document.getElementById('langBtn').innerText = content[lang].langBtnText;
+        document.getElementById('name').innerText = content[lang].name;
+        document.getElementById('intro').innerText = content[lang].intro;
+        document.getElementById('footer').innerText = content[lang].footer;
+        buildAccordion();
+    }
+    
+    function addAccordionListeners() {
+        document.querySelectorAll(".info-box-header").forEach(header => {
+            if(header.tagName === 'A') return;
+            header.addEventListener("click", () => {
+                const contentWrapper = header.nextElementSibling;
+                const contentInner = contentWrapper.querySelector('.accordion-content-inner');
+                header.classList.toggle("active");
+                contentWrapper.style.maxHeight = contentWrapper.style.maxHeight ? null : contentInner.offsetHeight + "px";
+            });
+        });
+    }
+
+    document.getElementById('langBtn').addEventListener('click', () => {
+        currentLang = currentLang === 'en' ? 'hi' : 'en';
+        updateAllContent(currentLang);
+    });
+
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    const langToggle = document.getElementById('langToggle');
+    const mainContent = document.getElementById('mainContent');
+    let lastScroll = 0;
+    mainContent.addEventListener('scroll', () => {
+        const currentScroll = mainContent.scrollTop;
+        backToTopBtn.classList.toggle('active', currentScroll > 300);
+        if (currentScroll > lastScroll && currentScroll > 50) langToggle.classList.add('hide');
+        else langToggle.classList.remove('hide');
+        lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+    });
+    backToTopBtn.addEventListener('click', () => mainContent.scrollTo(0, 0));
+
+    window.onload = () => {
+        document.body.classList.add('loaded');
+        updateAllContent(currentLang);
+    };
+});
+</script>
+</body>
+</html>
