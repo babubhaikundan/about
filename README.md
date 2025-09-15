@@ -1,7 +1,7 @@
      Hello YYE NICHE WALA COPY PASTE KARNA HAI 
           👇👇👇👇👇
 
-        intent:#Intent;action=android.settings.SETTINGS;end
+        `intent:#Intent;action=android.settings.SETTINGS;end`
 
 
 
