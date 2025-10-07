@@ -97,14 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
           { id: 'experience', title: 'Experience', content_type: 'list', items: ["Internship in PHED Department (Govt.) – Dec 2023 to Jan 2024"] },
           { id: 'contact', title: 'Contact', content_type: 'list', items: ["📍 Supaul, Bihar", "📧 hellokundan76@gmail.com", "📞 +91 7654405920"] },
           { id: 'photos', title: 'Photo Album', content_type: 'link', url: 'gallery.html' },
-          { id: 'social', title: 'Social Media & Resume', content_type: 'social-links' }
+          { id: 'social', title: 'Social Media Links', content_type: 'social-links' }
         ],
         resumeBtn: "📄 Download Resume",
         footer: "© 2025 BABU BHAI KUNDAN. All rights reserved."
       },
       hi: {
         langBtnText: "English",
-        name: "Babu (Kundan Yadav)",
+        name: "Babu Bhai Kundan (Kundan Yadav)",
         intro: "मैं एक सिविल इंजीनियर हूं, जिसकी संचार कौशल क्षमता बहुत अच्छी है, मैं एक सक्रिय श्रोता हूं, तथा शीघ्र सीखने वाला व्यक्ति हूं, तथा विविध पृष्ठभूमियों के व्यक्तियों के साथ प्रभावी ढंग से जुड़ने में सक्षम हूं। ",
         sections: [
           { id: 'projects', title: 'परियोजनाएं', content_type: 'list', items: ["आवासीय भवन योजना: ऑटोकैड का उपयोग करके 2BHK लेआउट डिजाइन किया।", "जल गुणवत्ता विश्लेषण (इंटर्नशिप): पानी के नमूनों पर जांच की।", "बेसिक सर्वेक्षण परियोजना: लेवलिंग और कंटूरिंग का प्रदर्शन किया।"] },
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
           { id: 'experience', title: 'अनुभव', content_type: 'list', items: ["पीएचईडी विभाग में इंटर्नशिप – दिसंबर 2023 से जनवरी 2024"] },
           { id: 'contact', title: 'संपर्क', content_type: 'list', items: ["📍 सुपौल, बिहार", "📧 hellokundan76@gmail.com", "📞 +91 7654405920"] },
           { id: 'photos', title: 'फोटो एल्बम', content_type: 'link', url: 'gallery.html' },
-          { id: 'social', title: 'सोशल मीडिया और रिज्यूमे', content_type: 'social-links' }
+          { id: 'social', title: 'सोशल मीडिया links', content_type: 'social-links' }
         ],
         resumeBtn: "📄 रिज्यूमे डाउनलोड करें",
         footer: "© 2025 बाबू भाई कुंदन। सर्वाधिकार सुरक्षित।"
@@ -137,15 +137,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (section.content_type === 'social-links') {
                     // --- ALL SOCIAL LINKS ARE NOW HERE ---
                     innerContentHtml = `<div class="social-links">
-                        <a id="resume-btn" href="Resume.pdf" download>${content[currentLang].resumeBtn}</a>
-                        <a href="https://www.linkedin.com/in/babubhaikundan" target="_blank">💼 LinkedIn</a>
+                        
+                        
                         <a href="https://instagram.com/babubhaikundan" target="_blank">📸 Instagram</a>
                         <a href="https://facebook.com/babubhaikundan" target="_blank">📘 Facebook</a>
                         <a href="https://youtube.com/@babubhaikundan" target="_blank">📺 YouTube</a>
                         <a href="https://t.me/kundan_yadav_bot" target="_blank">✈️ Telegram</a>
                         <a href="https://babubhaikundan.blogspot.com" target="_blank">📝 Blogger</a>
                         <a href="https://x.com/babubhaikundan" target="_blank">🐦 Twitter</a>
-                        <a href="https://www.google.com/search?q=babubhaikundan&oq=bab&gs_lcrp=EgZjaHJvbWUqCAgFEEUYJxg7MgYIABBFGDwyBggBEEUYPDIGCAIQRRg8MggIAxBFGCcYOzIGCAQQRRg5MggIBRBFGCcYOzIGCAYQRRg8MgYIBxBFGDwyCggIEAAYsQMYgAQyCggJEC4YsQMYgAQyBwgKEC4YgAQyCggLEC4YsQMYgAQyCggMEC4YsQMYgAQyCggNEC4YsQMYgAQyBwgOEAAYgATSAQgxNzMzajBqN6gCFLACAfEFapBJaq7b1E4&client=ms-android-samsung-ss&sourceid=chrome-mobile&ie=UTF-8" target="_blank">Search on Google<br>BabuBhaiKundan</a>
+                        <a href="https://www.linkedin.com/in/babubhaikundan" target="_blank">💼 LinkedIn</a>
+                        <a href="https://babubhaikundan-tools.blogspot.com" target="_blank">🔧 img/pdf Tools</a>
+                        <a href="https://kundantestserieshub.blogspot.com" target="_blank">📖 Test Series Website</a>
+                        <a href="https://www.google.com/search?q=babubhaikundan&oq=bab&gs_lcrp=EgZjaHJvbWUqCAgFEEUYJxg7MgYIABBFGDwyBggBEEUYPDIGCAIQRRg8MggIAxBFGCcYOzIGCAQQRRg5MggIBRBFGCcYOzIGCAYQRRg8MgYIBxBFGDwyCggIEAAYsQMYgAQyCggJEC4YsQMYgAQyBwgKEC4YgAQyCggLEC4YsQMYgAQyCggMEC4YsQMYgAQyCggNEC4YsQMYgAQyBwgOEAAYgATSAQgxNzMzajBqN6gCFLACAfEFapBJaq7b1E4&client=ms-android-samsung-ss&sourceid=chrome-mobile&ie=UTF-8" target="_blank">🔍 Search on Google<br>BabuBhaiKundan</a>
+                        <a id="resume-btn" href="Resume.pdf" download>${content[currentLang].resumeBtn}</a>
+            
+                    
+                    
                     </div>`;
                 }
                 
